@@ -1,0 +1,132 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'maven'
+
+// apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
+    defaultConfig {
+        applicationId "com.test"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        ndk{
+//            moduleName "jniLib"
+//            abiFilters "armeabi","armeabi-v7a"//编译支持的平台
+//        }
+    }
+
+    buildTypes {
+
+//        debug {
+//            applicationVariants.all { variant ->
+//                renameAPK(variant, defaultConfig, 'T')
+//            }
+//        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+//    testOptions {
+//        unitTests.returnDefaultValues = true
+//    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+//    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+
+//    compile 'io.reactivex:rxjava:+'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'io.reactivex:rxjava:1.0.14'
+
+//    compile 'com.yuyh.imgsel:library:1.2.0'
+
+
+//    compile 'com.android.support:customtabs:23.1.1'
+//    apt 'com.google.dagger:dagger-compiler:2.0'
+//    compile 'com.google.dagger:dagger:2.0'
+
+//    compile 'com.example.testlib:mylibrary:1.0.0'
+
+
+    testCompile 'junit:junit:4.12'
+//    testCompile 'org.robolectric:robolectric:3.0'
+//    testCompile "org.mockito:mockito-core:1.10.19"
+//    testCompile 'com.squareup.retrofit2:retrofit:2.0.2'
+//    testCompile 'com.squareup.retrofit2:converter-gson:2.0.2'
+//    testCompile 'com.squareup.okhttp3:okhttp:3.3.1'
+//    testCompile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+//    testCompile 'org.json:json:20140107'
+//
+//    androidTestCompile 'com.android.support.test:runner:0.2'
+//    androidTestCompile 'com.android.support.test:rules:0.2'
+
+//    compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
+
+    //測試公用元件# 
+//     compile 'com.caccommonmodule:CACCommonModule:1.0.0'
+
+    //圖片選擇器測試
+    compile 'com.github.YancyYe:GalleryPick:1.2.1'
+
+    //google 分析電話
+//    compile 'com.googlecode.libphonenumber:libphonenumber:8.0.0'
+    compile 'com.github.bumptech.glide:glide:3.6.0'
+    compile 'com.google.firebase:firebase-core:10.2.6'
+    compile 'com.google.firebase:firebase-messaging:10.2.6'
+
+
+}
+
+//def renameAPK(variant, defaultConfig, buildType) {
+//    variant.outputs.each { output ->
+//        def formattedDate = new Date().format('yyyyMMdd')
+//
+//        def file = output.packageApplication.outputFile
+//        def fileName = applicationName + "_" + defaultConfig.versionName + "_" + //formattedDate + /*"_" + buildType +*/ ".apk"
+//        output.packageApplication.outputFile = new File(file.parent, fileName)
+//    }
+//}
+
+//uploadArchives {
+//    configuration = configurations.archives
+//    repositories.mavenDeployer {
+//        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//        repository(url: 'http://127.0.0.1:8081/nexus/content/repositories/juude-id/') {//仓库地址
+//            authentication(userName: "admin",//用户名
+//                    password: "admin123")//密码
+//        }
+//    }
+//}
+
+
+// Add to the bottom of the file
+apply plugin: 'com.google.gms.google-services'
+
+

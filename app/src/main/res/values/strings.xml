@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">test</string>
+    <string name="getToken">getToken</string>
+    <string name="getLives">getLives</string>
+    <string name="getLiveDetail">getLiveDetail</string>
+    <string name="getMemberToken">getMemberToken</string>
+    <string name="createMember">createMember</string>
+
+    <string name="insert">insert</string>
+    <string name="query">query</string>
+
+    <string name="hint_name">name</string>
+    <string name="hint_email">email</string>
+    <!--<string name="createMember">createMember</string>-->
+    <!--<string name="createMember">createMember</string>-->
+</resources>
