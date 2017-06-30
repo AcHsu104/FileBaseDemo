@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.test.HttpClient;
 import com.test.MainApp;
 import com.test.R;
-import com.test.TestModel;
 import com.test.contentprovider.NotePad;
 import com.test.contract.MainActivityContract;
 import com.test.databinding.ActivityMainBinding;
@@ -30,6 +29,9 @@ import com.test.samodel.Token;
 import com.test.server.Api;
 import com.test.server.BaseModel;
 import com.test.server.JobModel;
+import com.test.server.QueryKey;
+import com.test.server.Result;
+import com.test.server.SearchedJob;
 
 import java.util.HashMap;
 import java.util.List;
@@ -134,23 +136,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         binding.setHandler(this);
 
-        TestModel mTestModel = new TestModel();
-        Log.e(getLocalClassName(), mTestModel.StringFromJNI());
+//        TestModel mTestModel = new TestModel();
+//        Log.e(getLocalClassName(), mTestModel.StringFromJNI());
 
-        if(TextUtils.isEmpty(MainApp.getInstance().getToken()) ||
-                (System.currentTimeMillis() / 1000) -  MainApp.getInstance().getTokenTime() > MainApp.getInstance().dayUnixTime){
-            getToken(MainApp.getInstance().client_id, MainApp.getInstance().client_secret);
-        }else
-        {
-            token = new Token();
-            token.setToken(MainApp.getInstance().getToken());
-            binding.txtTel.setText("Token : " + (!TextUtils.isEmpty(token.getToken()) ?
-                    token.getToken() : "non token"));
-        }
+
+
+//        getStrassToken();
+
+
 
 //        binding.setModel(model);
 //        model.url.set("https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_284x96dp.png");
-
 
 //        //点击按钮改变User的数据
 //        binding.btn.setOnClickListener(new android.view.View.OnClickListener() {
@@ -217,49 +213,97 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         binding.recyclerview.setLayoutManager(mLinearLayoutManager);
 
 
-//        Map<String, String> query = new HashMap<String, String>();
-//        query.put(QueryKey.ID_CK, "");
-//        query.put(QueryKey.ID_CK_N, "");
-//        query.put(QueryKey.DEVICE_ID, "");
-//        // 20150908 add device_type
-//        query.put(QueryKey.DEVICE_TYPE, "2");
-//        query.put(QueryKey.KWS, "104");
+        responseSearchJob();
+    }
+
+    private void getStrassToken(){
+        if(TextUtils.isEmpty(MainApp.getInstance().getToken()) ||
+                (System.currentTimeMillis() / 1000) -  MainApp.getInstance().getTokenTime() > MainApp.getInstance().dayUnixTime){
+            getToken(MainApp.getInstance().client_id, MainApp.getInstance().client_secret);
+        }else
+        {
+            token = new Token();
+            token.setToken(MainApp.getInstance().getToken());
+            binding.txtTel.setText("Token : " + (!TextUtils.isEmpty(token.getToken()) ?
+                    token.getToken() : "non token"));
+        }
+    }
+
+    private void responseSearchJob(){
+        int page = 1;
+        Map<String, String> query = new HashMap<String, String>();
+        query.put(QueryKey.ID_CK, "");
+        query.put(QueryKey.ID_CK_N, "");
+        query.put(QueryKey.DEVICE_ID, "");
+        // 20150908 add device_type
+        query.put(QueryKey.DEVICE_TYPE, "2");
+        query.put(QueryKey.KWS, "104");
+
+        query.put(QueryKey.PAGE, String.valueOf(page));
+
+        Call<Result<List<SearchedJob>>> call = /*new HttpClient().init(Api.class)*/
+                HttpClient.getInstance().init(Api.class).searchJob(query);
+
+
+        call.enqueue(new Callback<Result<List<SearchedJob>>>() {
+            @Override
+            public void onResponse(Call<Result<List<SearchedJob>>> call, Response<Result<List<SearchedJob>>> response) {
+                //请求成功操作
+                Log.e("onResponse", response.message());
+                if(response != null && response.body() != null){
+
+//                    code >= 200 && code < 300;
+//                    response.isSuccessful()
+
+                    Log.e("onResponse", response.body().toString());
+                }else{
+//                    call.enqueue(this);
+                    Toast.makeText(MainActivity.this, "server error" ,Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+            @Override
+            public void onFailure(Call<Result<List<SearchedJob>>> call, Throwable t) {
+                //请求失败操作
+//                Log.e("onFailure", t.printStackTrace());
+//                Exception
+//                HttpException
+                t.printStackTrace();
+            }
+        });
+
+//        IOException
+//        EOFException
+//        JsonParseException
+//        JsonSyntaxException
+
+//        Call call = /*new HttpClient().init(Api.class)*/
+//                HttpClient.getInstance().init(Api.class).searchJob(query);
 //
-//        query.put(QueryKey.PAGE, String.valueOf(page));
 //
-//        OkHttpClient.Builder client = new OkHttpClient.Builder();
-//        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-//        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        client.addInterceptor(loggingInterceptor);
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .baseUrl("http://" + API_SERVER)
-//                .client(client.build())
-//                .build();
-//        Api service = retrofit.create(Api.class);
-//
-//
-//        Call<Result<List<SearchedJob>>> call = service.searchJob(query);
-//        call.enqueue(new Callback<Result<List<SearchedJob>>>() {
+//        call.enqueue(new Callback() {
 //            @Override
-//            public void onResponse(Call<Result<List<SearchedJob>>> call, Response<Result<List<SearchedJob>>> response) {
-//                //请求成功操作
+//            public void onResponse(Call call, Response response) {
 //                Log.e("onResponse", response.message());
-//                Log.e("onResponse", response.body().toString());
+//                if(response != null && response.body() != null){
+//
+////                    code >= 200 && code < 300;
+////                    response.isSuccessful()
+//
+//                    Log.e("onResponse", response.body().toString());
+//                }else{
+////                    call.enqueue(this);
+//                    Toast.makeText(MainActivity.this, "server error" ,Toast.LENGTH_SHORT).show();
+//
+//                }
 //            }
+//
 //            @Override
-//            public void onFailure(Call<Result<List<SearchedJob>>> call, Throwable t) {
-//                //请求失败操作
-////                Log.e("onFailure", t.printStackTrace());
-//                t.printStackTrace();
+//            public void onFailure(Call call, Throwable t) {
+//
 //            }
 //        });
-
-
-//        query.put(QueryKey.PAGE_SIZE, MainApp.getInstance().pageSize);
-//        query.put(MainApp.getInstance().query_device_id,
-//                MainApp.getInstance().device_id_hash);
     }
 
 //    protected StringBuffer queryToQueryString(Map<String, String> query) {

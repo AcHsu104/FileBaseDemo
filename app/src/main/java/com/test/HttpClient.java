@@ -17,7 +17,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpClient {
-    private static String API_SERVER = "https://cms.straas.io/api/";
+//    private static String API_SERVER = "https://cms.straas.io/api/";
+
+    private static String API_SERVER = "http://m.e104.com.tw/api/1.0/";
+
     private static HttpClient httpClient;
 
     private Retrofit retrofit;
